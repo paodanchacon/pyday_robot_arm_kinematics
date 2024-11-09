@@ -12,7 +12,7 @@ from spatialmath.base import *
 from roboticstoolbox import *
 
 
-def get_robot_angles(x: float, y: float, a0: float = 1, a1: float = 1) -> tuple[float]:
+def compute_robot_angles(x: float, y: float, a0: float = 1, a1: float = 1) -> tuple[float]:
     """
     calculo de los angulos de un brazo robotico dado un punto (x, y)
     y la longitud de sus eslabones (a0, a1)
@@ -44,3 +44,34 @@ def get_robot_angles(x: float, y: float, a0: float = 1, a1: float = 1) -> tuple[
     q0_sol_subs = q0_sol2.subs({x_sym:x, y_sym:y, a0_sym:a0, a1_sym:a1, q1_sym:q1_num})
     q0_num = q0_sol_subs.evalf()
     return float(q0_num), float(q1_num)
+
+def compute_end_effector(q0:float, q1:float, a0:float = 1, a1:float = 1) -> tuple[float]:
+    # definir variables simbolicas
+    a0_sym, a1_sym = sympy.symbols("a0 a1") # longitudes de eslabones
+
+    # definir la ecuacion simbolica del movimiento (modelo cinematico)
+    kin_model = ET2.R() * ET2.tx(a0_sym) * ET2.R() * ET2.tx(a1_sym)
+    
+    # hallar ecuaciones de transformacion de la cinematica directa
+    transform_eq = kin_model.fkine([q0, q1])
+    x_fk, y_fk = transform_eq.t
+    x_fk_sub = x_fk.subs({a0_sym: a0, a1_sym:a1})
+    x_num = x_fk_sub.evalf()
+    y_fk_sub = y_fk.subs({a0_sym: a0, a1_sym:a1})
+    y_num = y_fk_sub.evalf()
+    return float(x_num), float(y_num)
+
+
+def compute_positions(q0: float, q1: float, a0: float = 1, a1: float = 1) -> list[tuple[float]]:
+    end_effector_pos = compute_end_effector(q0, q1, a0, a1)
+    x0 = a0 * math.cos(q0)
+    y0 = a0 * math.sin(q0)
+
+    return [(x0, y0), end_effector_pos]
+
+
+
+    
+
+
+
