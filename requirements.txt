@@ -1,0 +1,4 @@
+ipympl
+roboticstoolbox-python>=1.0.2
+rvc3python
+jupyter
