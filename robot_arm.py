@@ -48,16 +48,19 @@ def compute_robot_angles(x: float, y: float, a0: float = 1, a1: float = 1) -> tu
 def compute_end_effector(q0:float, q1:float, a0:float = 1, a1:float = 1) -> tuple[float]:
     # definir variables simbolicas
     a0_sym, a1_sym = sympy.symbols("a0 a1") # longitudes de eslabones
+    q0_sym, q1_sym = sympy.symbols("q0 q1") # angulos del brazo
 
     # definir la ecuacion simbolica del movimiento (modelo cinematico)
     kin_model = ET2.R() * ET2.tx(a0_sym) * ET2.R() * ET2.tx(a1_sym)
     
     # hallar ecuaciones de transformacion de la cinematica directa
-    transform_eq = kin_model.fkine([q0, q1])
+    transform_eq = kin_model.fkine([q0_sym, q1_sym])
     x_fk, y_fk = transform_eq.t
-    x_fk_sub = x_fk.subs({a0_sym: a0, a1_sym:a1})
+
+    # substituir variables simbolicas y evaluar valores numericos
+    x_fk_sub = x_fk.subs({a0_sym:a0, a1_sym:a1, q0_sym:q0, q1_sym:q1})
     x_num = x_fk_sub.evalf()
-    y_fk_sub = y_fk.subs({a0_sym: a0, a1_sym:a1})
+    y_fk_sub = y_fk.subs({a0_sym:a0, a1_sym:a1, q0_sym:q0, q1_sym:q1})
     y_num = y_fk_sub.evalf()
     return float(x_num), float(y_num)
 
@@ -67,7 +70,7 @@ def compute_positions(q0: float, q1: float, a0: float = 1, a1: float = 1) -> lis
     x0 = a0 * math.cos(q0)
     y0 = a0 * math.sin(q0)
 
-    return [(x0, y0), end_effector_pos]
+    return [(0, 0),(x0, y0), end_effector_pos]
 
 
 
