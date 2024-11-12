@@ -16,11 +16,13 @@ def draw_robot(screen, q0, q1, a0, a1, fac_size):
     width, height = screen.get_size()
     points = compute_positions(q0, q1, a0, a1)
     pixel_points = convert_points(points, fac_size, fac_size, width//2, height//2)
-    pygame.draw.lines(screen, BLUE, False, pixel_points, 5)
+    for point in pixel_points:
+        pygame.draw.circle(screen, BLUE, point, 7, 5)
+    pygame.draw.lines(screen, BLUE, False, pixel_points, 8)
 
 def draw_grid(screen, cell_size):
     width, height = screen.get_size()
-    #draw axis
+    #dibujar eje central en (x,y)
     pygame.draw.line(screen, (0,0,0), (0, height/2),(width, height/2), 2)
     pygame.draw.line(screen, (0,0,0), (width/2, 0),(width/2, height), 2)
     #dibujar lineas verticales
