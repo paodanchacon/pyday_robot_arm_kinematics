@@ -30,7 +30,7 @@ def compute_robot_angles(x: float, y: float, a0: float = 1, a1: float = 1) -> tu
     x_fk, y_fk = transform_eq.t
 
     # hallar ecuaciones para los angulos    
-    eq0 = tuple(map(sympy.expand_trig, [x_fk - x, y_fk - y]))
+    eq0 = tuple(map(sympy.expand_trig, [x_fk - x_sym, y_fk - y_sym]))
     eq1 = (x_fk**2 + y_fk**2-x_sym**2-y_sym**2).trigsimp()
 
     # resolver ecuaciones de los angulos
