@@ -18,6 +18,7 @@ fac_size = 100
 
 # Definir colores
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 
 # Dibujar sliders
 q0_slider = Slider(screen, 50, height-100, 200, 20, min=0, max=2*math.pi, step=0.01)
@@ -30,6 +31,16 @@ q1_text = TextBox(screen, 270, height-50, 50, 30)
 # Texto de la posicion del click
 x_text = TextBox(screen, width-80, height-100, 50, 30)
 y_text = TextBox(screen, width-80, height-50, 50, 30)
+
+
+# Set up the font
+font = pygame.font.Font(None, 32)
+# Texto referencial para la posicion del efector final (x,y)
+label_text_xy= font.render('Punto(x,y)', True, BLACK)
+# Texto referenciale para valores q0 y q1
+label_text_q0= font.render('q0', True, BLACK)
+label_text_q1= font.render('q1', True, BLACK)
+
 
 # Parametros del robot
 a0, a1 = 1, 1
@@ -85,12 +96,15 @@ while running:
     # Fill the screen with white
     screen.fill(WHITE)
     draw_grid(screen, 50)
-    pygame.draw.circle(screen, (255,0,0), (x_t,y_t), 9, 3)
+    pygame.draw.circle(screen, (255,0,0), (x_t,y_t), 12, 3)
     draw_robot(screen, q0, q1, a0, a1, fac_size)
 
     # Draw the sliders and text boxes
     pygame_widgets.update(events)
-    
+    # Show the text next to textboxes 
+    screen.blit(label_text_xy, (650,650))
+    screen.blit(label_text_q0, (250,650))
+    screen.blit(label_text_q1, (300,650))
     # Update the display
     pygame.display.flip()
 
