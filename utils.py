@@ -19,6 +19,9 @@ def draw_robot(screen, q0, q1, a0, a1, fac_size):
     for point in pixel_points:
         pygame.draw.circle(screen, BLUE, point, 12, 6)
     pygame.draw.lines(screen, BLUE, False, pixel_points, 12)
+    # Draw range circles
+    pygame.draw.circle(screen, (0, 255, 0), (width // 2, height // 2), radius=(a0 + a1) * fac_size, width=2)
+    pygame.draw.circle(screen, (0, 255, 0), (width // 2, height // 2), radius=(a0 - a1) * fac_size, width=2)
 
 def draw_grid(screen, cell_size):
     width, height = screen.get_size()

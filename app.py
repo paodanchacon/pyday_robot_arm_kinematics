@@ -20,9 +20,6 @@ fac_size = 100
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
-# Dibujar sliders
-q0_slider = Slider(screen, 50, height-100, 200, 20, min=0, max=2*math.pi, step=0.01)
-q1_slider = Slider(screen, 50, height-50, 200, 20, min=0, max=2*math.pi, step=0.01)
 
 # Texto de los angulos
 q0_text = TextBox(screen, 270, height-100, 50, 30)
@@ -36,10 +33,12 @@ y_text = TextBox(screen, width-80, height-50, 50, 30)
 # Set up the font
 font = pygame.font.Font(None, 32)
 # Texto referencial para la posicion del efector final (x,y)
-label_text_xy= font.render('Punto(x,y)', True, BLACK)
+# label_text/_xy= font.render('Punto(x,y)', True, BLACK)
+label_text_x = font.render('x:', True, BLACK)
+label_text_y = font.render('y:', True, BLACK)
 # Texto referenciale para valores q0 y q1
-label_text_q0= font.render('q0', True, BLACK)
-label_text_q1= font.render('q1', True, BLACK)
+label_text_q0= font.render('q0:', True, BLACK)
+label_text_q1= font.render('q1:', True, BLACK)
 
 
 # Parametros del robot
@@ -67,9 +66,6 @@ while running:
             y_text.setText(str(y))
             is_computed = False
        
-    #Update values from sliders
-    # q0 = q0_slider.getValue()
-    # q1 = q1_slider.getValue()
 
     # get angles from inverse kinematics function
     if x is not None and y is not None and not is_computed:
@@ -90,21 +86,22 @@ while running:
         print(f"angles computed: {q0}, {q1}")
         is_computed = True
     # Update text boxes to show slider values
-    q0_text.setText(str(q0))
-    q1_text.setText(str(q1))
+    q0_text.setText(f"{q0:.2f}")
+    q1_text.setText(f"{q1:.2f}")
 
     # Fill the screen with white
     screen.fill(WHITE)
     draw_grid(screen, 50)
-    pygame.draw.circle(screen, (255,0,0), (x_t,y_t), 12, 3)
     draw_robot(screen, q0, q1, a0, a1, fac_size)
+    pygame.draw.circle(screen, (255,0,0), (x_t,y_t), 12, 6)
 
     # Draw the sliders and text boxes
     pygame_widgets.update(events)
     # Show the text next to textboxes 
-    screen.blit(label_text_xy, (650,650))
-    screen.blit(label_text_q0, (250,650))
-    screen.blit(label_text_q1, (300,650))
+    screen.blit(label_text_x, (width-120, height-100))
+    screen.blit(label_text_y, (width-120, height-50))
+    screen.blit(label_text_q0, (230,height-100))
+    screen.blit(label_text_q1, (230,height-50))
     # Update the display
     pygame.display.flip()
 

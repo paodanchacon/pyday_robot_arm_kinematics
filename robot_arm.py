@@ -43,6 +43,7 @@ def compute_robot_angles(x: float, y: float, a0: float = 1, a1: float = 1) -> tu
     q1_num = q1_sol_subs.evalf()
     q0_sol_subs = q0_sol2.subs({x_sym:x, y_sym:y, a0_sym:a0, a1_sym:a1, q1_sym:q1_num})
     q0_num = q0_sol_subs.evalf()
+    print(f"Q0: {q0_num}, Q1: {q1_num}")
     return float(q0_num), float(q1_num)
 
 def compute_end_effector(q0:float, q1:float, a0:float = 1, a1:float = 1) -> tuple[float]:
